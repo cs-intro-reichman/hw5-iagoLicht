@@ -91,14 +91,16 @@ public class MyString {
      * @return a string consisting of the characters of str, separated by spaces.
      */
     public static String spacedString(String str) {
-        String newString = "";
-        int lastCharacterIndex = str.length() - 1;
-        for (int i = 0; i < str.length() - 1; i++) {
-            newString += str.charAt(i) + " ";
+        if (str == "") {
+            return str;
         }
-        newString += str.charAt(lastCharacterIndex);
+        String spaced = "";
+        for (int i = 0; i < str.length() - 1; i++) {
+            spaced += str.charAt(i) + " ";
+        }
+        spaced += str.charAt(str.length() - 1);
+        return spaced;
 
-        return newString;
     }
 
     /**
