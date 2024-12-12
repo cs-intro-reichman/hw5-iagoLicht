@@ -1,6 +1,3 @@
-/*
- * RUNI version of the Scrabble game.
- */
 public class Scrabble {
 
 	// Note 1: "Class variables", like the five class-level variables declared
@@ -67,18 +64,18 @@ public class Scrabble {
 	// the score.
 	// If the word includes the sequence "runi", adds 1000 points to the game.
 	public static int wordScore(String word) {
-		int result = 0;
+		int score = 0;
 		for (int i = 0; i < word.length(); i++) {
-			result += SCRABBLE_LETTER_VALUES[word.charAt(i) - 97];
+			score += SCRABBLE_LETTER_VALUES[(word.charAt(i) - 97)];
 		}
-		result = result * word.length();
+		score *= word.length();
 		if (word.length() == HAND_SIZE) {
-			result += 50;
+			score += 50;
 		}
 		if (MyString.subsetOf("runi", word)) {
-			result += 1000;
+			score += 1000;
 		}
-		return result;
+		return score;
 	}
 
 	// Creates a random hand of length (HAND_SIZE - 2) and then inserts
@@ -98,7 +95,7 @@ public class Scrabble {
 	// 3. The user is prompted to enter another word, or '.' to end the hand.
 	public static void playHand(String hand) {
 		int score = 0;
-		int numWords = 1;
+		int numOfWords = 1;
 		// Declares the variable in to refer to an object of type In, and initializes it
 		// to represent
 		// the stream of characters coming from the keyboard. Used for reading the
@@ -119,7 +116,7 @@ public class Scrabble {
 				score += wordScore(input);
 				System.out.println(input + " earned " + wordScore(input) + " points. Score: " + score + " points\n");
 				hand = MyString.remove(hand, input);
-				numWords++;
+				numOfWords++;
 			} else {
 				System.out.println("No such word in the dictionary. Try again.");
 			}
@@ -161,6 +158,7 @@ public class Scrabble {
 		////testCreateHands();  
 		////testPlayHands();
 		////playGame();
+		playGame();
 	}
 
 	public static void testBuildingTheDictionary() {
