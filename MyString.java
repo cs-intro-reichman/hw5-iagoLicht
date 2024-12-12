@@ -4,38 +4,12 @@
 public class MyString {
     public static void main(String args[]) {
         String hello = "hello";
-        System.out.println("this is countChar fun: " + countChar(hello, 'h'));
+        System.out.println(countChar(hello, 'h'));
         System.out.println(countChar(hello, 'l'));
         System.out.println(countChar(hello, 'z'));
         System.out.println(spacedString(hello));
-        System.out.println(randomStringOfLetters(7));
         //// Put your other tests here.
     }
-
-    /**
-     * Returns a set containing the odd elements of the given set (elements that are
-     * not multiples of 2).
-     */
-    // שאלה ממבחן דוגמא למבחן אמצע
-    // public static int[] oddValuesOf(int[] set) {
-
-    // int count = 0;
-    // for (int i = 0; i < set.length; i++) {
-    // if (set[i] %2 ==1) {
-    // count++;
-    // }
-    // }
-
-    // int[] arr = new int[count];
-    // int index = 0;
-    // for (int i = 0; i < set.length; i++) {
-    // if (set[i] % 2 == 1) {
-    // arr[index] = set[i];
-    // index++;
-    // }
-    // }
-    // return arr;
-    // }
 
     /**
      * Returns the number of times the given character appears in the given string.
@@ -47,13 +21,13 @@ public class MyString {
      * @return the number of times c appears in str
      */
     public static int countChar(String str, char ch) {
-        int count = 0;
+        int counter = 0;
         for (int i = 0; i < str.length(); i++) {
-            if (ch == str.charAt(i)) {
-                count++;
+            if (str.charAt(i) == ch) {
+                counter++;
             }
         }
-        return count;
+        return counter;
     }
 
     /**
@@ -69,14 +43,23 @@ public class MyString {
      * @return true is str1 is a subset of str2, false otherwise
      */
     public static boolean subsetOf(String str1, String str2) {
-        if (str1.isEmpty())
-            return true;
-        if (str2.isEmpty() || str1.length() > str2.length())
-            return false;
+        String copyStr2 = str2;
         for (int i = 0; i < str1.length(); i++) {
-            if (countChar(str2, str1.charAt(i)) < countChar(str1, str1.charAt(i)))
+            if (countChar(copyStr2, str1.charAt(i)) == 0) {
                 return false;
-
+            } else {
+                for (int j = 0; j < copyStr2.length(); j++) {
+                    if (str1.charAt(i) == copyStr2.charAt(j)) {
+                        if (j == 0) {
+                            copyStr2 = copyStr2.substring(1);
+                        } else if (j == (copyStr2.length() - 1)) {
+                            copyStr2 = copyStr2.substring(0, j);
+                        } else {
+                            copyStr2 = copyStr2.substring(0, j) + copyStr2.substring(j + 1);
+                        }
+                    }
+                }
+            }
         }
         return true;
     }
@@ -100,7 +83,6 @@ public class MyString {
         }
         spaced += str.charAt(str.length() - 1);
         return spaced;
-
     }
 
     /**
@@ -114,11 +96,12 @@ public class MyString {
      * @return a randomly generated string, consisting of 'n' lowercase letters
      */
     public static String randomStringOfLetters(int n) {
-        String random = "";
+        String randString = "";
+        int code = 0;
         for (int i = 0; i < n; i++) {
-            random += (char) (97 + (int) (Math.random() * 26));
+            randString += (char) ((int) (Math.random() * 26) + 97);
         }
-        return random;
+        return randString;
     }
 
     /**
@@ -134,7 +117,7 @@ public class MyString {
     public static String remove(String str1, String str2) {
         for (int i = 0; i < str2.length(); i++) {
             for (int j = 0; j < str1.length(); j++) {
-                if (str1.charAt(i) == str2.charAt(j)) {
+                if (str2.charAt(i) == str1.charAt(j)) {
                     if (j == 0) {
                         str1 = str1.substring(1);
                     } else if (j == (str1.length() - 1)) {
@@ -142,10 +125,8 @@ public class MyString {
                     } else {
                         str1 = str1.substring(0, j) + str1.substring(j + 1);
                     }
-
                 }
             }
-
         }
         return str1;
     }
