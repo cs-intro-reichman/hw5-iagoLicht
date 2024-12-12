@@ -1,58 +1,148 @@
-public class MyStringTest {
-    public static void main(String[] args) {
-        if (args.length == 0) {
-            System.out.println("Please provide a specific test to run: countChar, subsetOf, spacedString, randomStringOfLetters, or remove.");
-            return;
+public class MyString {
+    public static void main(String args[]) {
+        String hello = "hello";
+        System.out.println(countChar(hello, 'h'));
+        System.out.println(countChar(hello, 'l'));
+        System.out.println(countChar(hello, 'z'));
+        System.out.println(spacedString(hello));
+        //// Put your other tests here.
+    }
+
+    /**
+     * Returns the number of times the given character appears in the given string.
+     * Example: countChar("Center",'e') returns 2 and countChar("Center",'c')
+     * returns 0.
+     * 
+     * @param str - a string
+     * @param c   - a character
+     * @return the number of times c appears in str
+     */
+    public static int countChar(String str, char ch) {
+        int counter = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == ch) {
+                counter++;
+            }
         }
-        // Run specific test based on argument
-        switch (args[0]) {
-            case "countChar": testCountChar(); break;
-            case "subsetOf": testSubsetOf(); break;
-            case "spacedString": testSpacedString(); break;
-            case "randomStringOfLetters": testRandomStringOfLetters(); break;
-            case "remove": testRemove(); break;
-            default: System.out.println("Unknown test: " + args[0]);
+        return counter;
+    }
+
+    /**
+     * Returns true if str1 is a subset string str2, false otherwise
+     * Examples:
+     * subsetOf("sap","space") returns true
+     * subsetOf("spa","space") returns true
+     * subsetOf("pass","space") returns false
+     * subsetOf("c","space") returns true
+     *
+     * @param str1 - a string
+     * @param str2 - a string
+     * @return true is str1 is a subset of str2, false otherwise
+     */
+    public static boolean subsetOf(String str1, String str2) {
+        String copyStr2 = str2;
+        for (int i = 0; i < str1.length(); i++) {
+            if (countChar(copyStr2, str1.charAt(i)) == 0) {
+                return false;
+            } else {
+                for (int j = 0; j < copyStr2.length(); j++) {
+                    if (str1.charAt(i) == copyStr2.charAt(j)) {
+                        if (j == 0) {
+                            copyStr2 = copyStr2.substring(1);
+                        } else if (j == (copyStr2.length() - 1)) {
+                            copyStr2 = copyStr2.substring(0, j);
+                        } else {
+                            copyStr2 = copyStr2.substring(0, j) + copyStr2.substring(j + 1);
+                        }
+                    }
+                }
+            }
         }
+        return true;
     }
 
-    private static void testCountChar() {
-        System.out.println("\nTesting countChar:");
-        System.out.println("hello, l -> " + MyString.countChar("hello", 'l') + " (expected: 2)");
-        System.out.println("hello, h -> " + MyString.countChar("hello", 'h') + " (expected: 1)");
-        System.out.println("hello, z -> " + MyString.countChar("hello", 'z') + " (expected: 0)");
-        System.out.println("empty string, a -> " + MyString.countChar("", 'a') + " (expected: 0)");
-        System.out.println("aaa, a -> " + MyString.countChar("aaa", 'a') + " (expected: 3)");
+    /**
+     * Returns a string which is the same as the given string, with a space
+     * character inserted after each character in the given string, except
+     * for the last character.
+     * Example: spacedString("silent") returns "s i l e n t"
+     * 
+     * @param str - a string
+     * @return a string consisting of the characters of str, separated by spaces.
+     */
+    public static String spacedString(String str) {
+        if (str == "") {
+            return str;
+        }
+        String spaced = "";
+        for (int i = 0; i < str.length() - 1; i++) {
+            spaced += str.charAt(i) + " ";
+        }
+        spaced += str.charAt(str.length() - 1);
+        return spaced;
     }
 
-    private static void testSubsetOf() {
-        System.out.println("\nTesting subsetOf:");
-        System.out.println("sap in space -> " + MyString.subsetOf("sap", "space") + " (expected: true)");
-        System.out.println("spa in space -> " + MyString.subsetOf("spa", "space") + " (expected: true)");
-        System.out.println("pass in space -> " + MyString.subsetOf("pass", "space") + " (expected: false)");
-        System.out.println("c in space -> " + MyString.subsetOf("c", "space") + " (expected: true)");
-        System.out.println("empty string in anything -> " + MyString.subsetOf("", "anything") + " (expected: true)");
+    /**
+     * Returns a string of n lowercase letters, selected randomly from
+     * the English alphabet 'a', 'b', 'c', ..., 'z'. Note that the same
+     * letter can be selected more than once.
+     * 
+     * Example: randomStringOfLetters(3) can return "zoo"
+     * 
+     * @param n - the number of letter to select
+     * @return a randomly generated string, consisting of 'n' lowercase letters
+     */
+    public static String randomStringOfLetters(int n) {
+        String randString = "";
+        int code = 0;
+        for (int i = 0; i < n; i++) {
+            randString += (char) ((int) (Math.random() * 26) + 97);
+        }
+        return randString;
     }
 
-    private static void testSpacedString() {
-        System.out.println("\nTesting spacedString:");
-        System.out.println("silent -> \"" + MyString.spacedString("silent") + "\" (expected: s i l e n t)");
-        System.out.println("a -> \"" + MyString.spacedString("a") + "\" (expected: a)");
-        System.out.println("empty string -> \"" + MyString.spacedString("") + "\" (expected: )");
-        System.out.println("hi -> \"" + MyString.spacedString("hi") + "\" (expected: h i)");
+    /**
+     * Returns a string consisting of the string str1, minus all the characters in
+     * the
+     * string str2. Assumes (without checking) that str2 is a subset of str1.
+     * Example: remove("meet","committee") returns "comit"
+     * 
+     * @param str1 - a string
+     * @param str2 - a string
+     * @return a string consisting of str1 minus all the characters of str2
+     */
+    public static String remove(String str1, String str2) {
+        for (int i = 0; i < str2.length(); i++) {
+            for (int j = 0; j < str1.length(); j++) {
+                if (str2.charAt(i) == str1.charAt(j)) {
+                    if (j == 0) {
+                        str1 = str1.substring(1);
+                    } else if (j == (str1.length() - 1)) {
+                        str1 = str1.substring(0, j);
+                    } else {
+                        str1 = str1.substring(0, j) + str1.substring(j + 1);
+                    }
+                }
+            }
+        }
+        return str1;
     }
 
-    private static void testRandomStringOfLetters() {
-        System.out.println("\nTesting randomStringOfLetters:");
-        System.out.println("length 5 -> " + MyString.randomStringOfLetters(5));
-        System.out.println("length 10 -> " + MyString.randomStringOfLetters(10));
-        System.out.println("length 0 -> \"" + MyString.randomStringOfLetters(0) + "\"");
+    /**
+     * Returns a string consisting of the given string, with the given
+     * character inserted randomly somewhere in the string.
+     * For example, insertRandomly("s","cat") can return "scat", or "csat", or
+     * "cast", or "cats".
+     * 
+     * @param ch  - a character
+     * @param str - a string
+     * @return a string consisting of str with ch inserted somewhere
+     */
+    public static String insertRandomly(char ch, String str) {
+        // Generate a random index between 0 and str.length()
+        int randomIndex = (int) (Math.random() * (str.length() + 1));
+        // Insert the character at the random index
+        String result = str.substring(0, randomIndex) + ch + str.substring(randomIndex);
+        return result;
     }
-
-    private static void testRemove() {
-        System.out.println("\nTesting remove:");
-        System.out.println("committee - meet -> " + MyString.remove("committee", "meet") + " (expected: comit)");
-        System.out.println("abc - abc -> " + MyString.remove("abc", "abc") + " (expected: )");
-        System.out.println("abc - b -> " + MyString.remove("abc", "b") + " (expected: ac)");
-        System.out.println("hello - empty string -> " + MyString.remove("hello", "") + " (expected: hello)");
-    }
-} 
+}
